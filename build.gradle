@@ -1,0 +1,81 @@
+// Tareas por defecto
+defaultTasks 'clean', 'test', 'aggregate'
+
+// Configuración básica del proyecto
+group = 'co.com.superapp'
+version = '1.0-SNAPSHOT'
+
+// Aplicación de plugins
+apply plugin: 'java'
+apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
+
+// Repositorios para dependencias
+repositories {
+    mavenCentral()
+}
+
+// Configuración del buildscript
+buildscript {
+
+    // Definición global de versiones y otras propiedades
+    ext {
+        appiumVersion = "8.4.0"
+        logVersion = "2.20.0"
+        lombokVersion = "1.18.20"
+        assertjVersion = "3.24.2"
+        junitVersion = "4.13.1"
+        slf4jVersion = "2.0.7"
+        gsonVersion = "2.10.1"
+        jsoupVersion = "1.17.1"
+        serenityEnsureVersion = "2.4.44"
+        serenityVersion = '4.0.30'
+    }
+
+    repositories {
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+    }
+
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:${serenityVersion}")
+        //classpath "gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:3.0.1"
+    }
+}
+
+// Dependencias del proyecto
+dependencies {
+    // Serenity BDD
+    testImplementation "net.serenity-bdd:serenity-junit:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-screenplay-rest:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-ensure:${serenityEnsureVersion}"
+
+    // Browserstack
+    testImplementation "net.serenity-bdd:serenity-browserstack:${serenityVersion}"
+    implementation group: 'com.browserstack', name: 'browserstack-java-sdk', version: '1.20.2'
+
+    // Appium - 7.0.3
+    implementation "io.appium:java-client:${appiumVersion}"
+
+    // JUnit
+    implementation "junit:junit:${junitVersion}"
+
+}
+
+// Configuraciones adicionales
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+serenity {
+    testRoot = "co.com.superapp"
+    requirementsDir = "src/test/resources/features"
+}
+
+gradle.startParameter.continueOnFailure = true
+
+test.finalizedBy(aggregate)

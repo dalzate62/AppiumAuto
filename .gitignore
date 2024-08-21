@@ -1,0 +1,29 @@
+# Ignorar archivos automaticamente creados del proyecto
+/.gradle/
+/.idea/
+/build/
+/histoy/
+/target/
+/out/
+
+# Archivos personalizados
+src/test/java/com/claro/salesforceFront/runners/ConjuntoPruebasRunner
+#src/test/resources/properties/data.properties
+#src/main/resources/serenity.conf
+
+# Archivos de clases compiladas
+*.class
+
+#App
+*.apk
+
+# Archivos Log
+*.log
+*.txt
+*.pdf
+*.docx
+
+#Comprimidos
+*.rar
+*.zip
+*.7z
